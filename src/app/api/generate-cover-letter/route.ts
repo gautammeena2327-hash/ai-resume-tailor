@@ -53,8 +53,12 @@ Return ONLY the cover letter content, no additional commentary.
     return NextResponse.json({ coverLetter })
   } catch (error: unknown) {
     console.error('Error generating cover letter:', error)
+    const message = error instanceof Error ? error.message : 'Unknown error'
+    const details = error && typeof error === 'object' && 'error' in error 
+      ? (error as { error?: { message?: string } }).error?.message 
+      : message
     return NextResponse.json(
-      { error: 'Failed to generate cover letter', details: error instanceof Error ? error.message : 'Unknown error' },
+      { error: 'Failed to generate cover letter', details },
       { status: 500 }
     )
   }
