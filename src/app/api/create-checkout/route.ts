@@ -34,8 +34,8 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ url })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error creating checkout:', error)
-    return NextResponse.json({ error: 'Failed to create checkout' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to create checkout', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 })
   }
 }

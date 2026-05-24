@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Copy, Download, Loader2, FileText, Briefcase, Crown } from 'lucide-react'
 import Link from 'next/link'
 
@@ -13,22 +13,22 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [template, setTemplate] = useState('professional')
   const [activeTab, setActiveTab] = useState('input')
-  const [tailorCount, setTailorCount] = useState(0)
+  const [tailorCount, setTailorCount] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('tailorCount')
+      const lastReset = localStorage.getItem('lastReset')
+      const now = new Date().getTime()
 
-  useEffect(() => {
-    const saved = typeof window !== 'undefined' ? localStorage.getItem('tailorCount') : null
-    const lastReset = typeof window !== 'undefined' ? localStorage.getItem('lastReset') : null
-    const now = new Date().getTime()
+      if (lastReset && now - parseInt(lastReset) > 30 * 24 * 60 * 60 * 1000) {
+        localStorage.setItem('tailorCount', '0')
+        localStorage.setItem('lastReset', now.toString())
+        return 0
+      }
 
-    if (lastReset && now - parseInt(lastReset) > 30 * 24 * 60 * 60 * 1000) {
-      localStorage.setItem('tailorCount', '0')
-      localStorage.setItem('lastReset', now.toString())
-      setTailorCount(0)
-      return
+      return parseInt(saved || '0')
     }
-
-    setTailorCount(parseInt(saved || '0'))
-  }, [])
+    return 0
+  })
 
   const handleSubmit = async () => {
     if (!resume || !jobDescription || tailorCount >= FREE_TAILORS_LIMIT) return

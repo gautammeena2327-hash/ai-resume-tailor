@@ -49,10 +49,10 @@ Return ONLY the tailored resume content in markdown format, no additional commen
     const tailoredResume = completion.choices[0]?.message?.content || ''
 
     return NextResponse.json({ tailoredResume })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error tailoring resume:', error)
     return NextResponse.json(
-      { error: 'Failed to tailor resume' },
+      { error: 'Failed to tailor resume', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }
