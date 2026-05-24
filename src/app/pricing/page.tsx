@@ -64,10 +64,17 @@ export default function PricingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ variantId }),
       })
-      const { url } = await response.json()
+      const data = await response.json()
+      if (!response.ok) {
+        console.error('Checkout error:', data)
+        alert('Unable to create checkout. Please try again.')
+        return
+      }
+      const { url } = data
       if (url) window.location.assign(url)
     } catch (error) {
       console.error('Error:', error)
+      alert('Something went wrong. Please try again.')
     } finally {
       setIsLoading(null)
     }
