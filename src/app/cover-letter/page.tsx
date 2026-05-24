@@ -8,11 +8,13 @@ export default function CoverLetterPage() {
   const [jobDescription, setJobDescription] = useState('')
   const [coverLetter, setCoverLetter] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async () => {
     if (!resume || !jobDescription) return
 
     setIsLoading(true)
+    setError('')
     try {
       const response = await fetch('/api/generate-cover-letter', {
         method: 'POST',
@@ -21,9 +23,13 @@ export default function CoverLetterPage() {
       })
 
       const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || data.details || 'Failed to generate cover letter')
+      }
       setCoverLetter(data.coverLetter || '')
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error:', error)
+      setError(error instanceof Error ? error.message : 'An error occurred')
     } finally {
       setIsLoading(false)
     }
@@ -82,6 +88,11 @@ export default function CoverLetterPage() {
           </div>
 
           <div className="mt-6 text-center">
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg">
+                {error}
+              </div>
+            )}
             <button
               onClick={handleSubmit}
               disabled={!resume || !jobDescription || isLoading}
