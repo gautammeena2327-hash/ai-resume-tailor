@@ -36,19 +36,24 @@ Instructions:
 Return ONLY the tailored resume content in markdown format, no additional commentary.
 `
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: 'You are an expert resume writer specializing in ATS optimization and career coaching.' },
-        { role: 'user', content: prompt }
-      ],
-      temperature: 0.7,
-      max_tokens: 2000,
-    })
+    try {
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          { role: 'system', content: 'You are an expert resume writer specializing in ATS optimization and career coaching.' },
+          { role: 'user', content: prompt }
+        ],
+        temperature: 0.7,
+        max_tokens: 2000,
+      })
 
-    const tailoredResume = completion.choices[0]?.message?.content || ''
-
-    return NextResponse.json({ tailoredResume })
+      const tailoredResume = completion.choices[0]?.message?.content || ''
+      return NextResponse.json({ tailoredResume })
+    } catch (apiError: unknown) {
+      console.log('OpenAI API error, using fallback template')
+      const tailoredResume = generateFallbackResume(resume, jobDescription)
+      return NextResponse.json({ tailoredResume, isFallback: true })
+    }
   } catch (error: unknown) {
     console.error('Error tailoring resume:', error)
     return NextResponse.json(
@@ -56,4 +61,19 @@ Return ONLY the tailored resume content in markdown format, no additional commen
       { status: 500 }
     )
   }
+}
+
+function generateFallbackResume(resume: string, jobDescription: string): string {
+  return `# Tailored Resume
+
+## Professional Summary
+Experienced professional with skills matching ${jobDescription.substring(0, 50)}...
+
+## Work Experience
+${resume.split('\n').filter(line => line.includes('Experience') || line.includes('work') || line.includes('company')).slice(0, 5).join('\n') || 'Relevant experience tailored to job requirements'}
+
+## Skills
+Keywords matched from job description
+
+*Note: This is a placeholder. For AI-powered tailoring, please check OpenAI API billing.*`
 }

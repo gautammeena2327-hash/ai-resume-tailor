@@ -5,8 +5,6 @@ export async function POST(request: NextRequest) {
   try {
     const { resume, jobDescription } = await request.json()
 
-    console.log('API called, checking OPENAI_API_KEY:', !!process.env.OPENAI_API_KEY)
-
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json(
         { error: 'OpenAI API key not configured' },
@@ -38,19 +36,24 @@ Instructions:
 Return ONLY the cover letter content, no additional commentary.
 `
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: 'You are an expert cover letter writer specializing in persuasive, ATS-friendly letters.' },
-        { role: 'user', content: prompt }
-      ],
-      temperature: 0.7,
-      max_tokens: 500,
-    })
+    try {
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          { role: 'system', content: 'You are an expert cover letter writer specializing in persuasive, ATS-friendly letters.' },
+          { role: 'user', content: prompt }
+        ],
+        temperature: 0.7,
+        max_tokens: 500,
+      })
 
-    const coverLetter = completion.choices[0]?.message?.content || ''
-
-    return NextResponse.json({ coverLetter })
+      const coverLetter = completion.choices[0]?.message?.content || ''
+      return NextResponse.json({ coverLetter })
+    } catch (apiError: unknown) {
+      console.log('OpenAI API error, using fallback template')
+      const coverLetter = generateFallbackCoverLetter(resume, jobDescription)
+      return NextResponse.json({ coverLetter, isFallback: true })
+    }
   } catch (error: unknown) {
     console.error('Error generating cover letter:', error)
     const message = error instanceof Error ? error.message : 'Unknown error'
@@ -62,4 +65,20 @@ Return ONLY the cover letter content, no additional commentary.
       { status: 500 }
     )
   }
+}
+
+function generateFallbackCoverLetter(resume: string, jobDescription: string): string {
+  const nameMatch = resume.match(/^[A-Z][a-z]+/m)
+  const name = nameMatch ? nameMatch[0] : 'Candidate'
+  
+  return `Dear Hiring Manager,
+
+I am writing to express my interest in the position described. With my background and experience, I am confident in my ability to contribute effectively to your team.
+
+Based on the job description, I have identified key skills and qualifications that align well with your requirements. My experience includes relevant work that demonstrates my capability to perform in this role.
+
+I am enthusiastic about the opportunity to bring my skills and dedication to your organization. I look forward to discussing how I can contribute to your team's success.
+
+Sincerely,
+${name}`
 }
