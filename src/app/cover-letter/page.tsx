@@ -9,6 +9,7 @@ export default function CoverLetterPage() {
   const [coverLetter, setCoverLetter] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [isFallback, setIsFallback] = useState(false)
 
   const handleSubmit = async () => {
     if (!resume || !jobDescription) return
@@ -27,6 +28,7 @@ export default function CoverLetterPage() {
         throw new Error(data.error || data.details || 'Failed to generate cover letter')
       }
       setCoverLetter(data.coverLetter || '')
+      setIsFallback(data.isFallback || false)
     } catch (error: unknown) {
       console.error('Error:', error)
       setError(error instanceof Error ? error.message : 'An error occurred')
@@ -110,9 +112,14 @@ export default function CoverLetterPage() {
           </div>
         </div>
 
-        {coverLetter && (
-          <div className="mt-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
-            <div className="flex justify-between items-center mb-4">
+{coverLetter && (
+           <div className="mt-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+             {isFallback && (
+               <div className="mb-4 p-3 bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 rounded-lg text-sm">
+                 Note: OpenAI API unavailable. Showing template cover letter.
+               </div>
+             )}
+             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Your Cover Letter
               </h2>
