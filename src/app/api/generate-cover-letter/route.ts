@@ -49,9 +49,9 @@ Return ONLY the cover letter content, no additional commentary.
 
       const coverLetter = completion.choices[0]?.message?.content || ''
       return NextResponse.json({ coverLetter })
-    } catch (apiError: unknown) {
+    } catch {
       console.log('OpenAI API error, using fallback template')
-      const coverLetter = generateFallbackCoverLetter(resume, jobDescription)
+      const coverLetter = generateFallbackCoverLetter(resume)
       return NextResponse.json({ coverLetter, isFallback: true })
     }
   } catch (error: unknown) {
@@ -67,7 +67,7 @@ Return ONLY the cover letter content, no additional commentary.
   }
 }
 
-function generateFallbackCoverLetter(resume: string, jobDescription: string): string {
+function generateFallbackCoverLetter(resume: string): string {
   const nameMatch = resume.match(/^[A-Z][a-z]+/m)
   const name = nameMatch ? nameMatch[0] : 'Candidate'
   

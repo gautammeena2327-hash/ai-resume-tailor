@@ -49,9 +49,9 @@ Return ONLY the tailored resume content in markdown format, no additional commen
 
       const tailoredResume = completion.choices[0]?.message?.content || ''
       return NextResponse.json({ tailoredResume })
-    } catch (apiError: unknown) {
+    } catch {
       console.log('OpenAI API error, using fallback template')
-      const tailoredResume = generateFallbackResume(resume, jobDescription)
+      const tailoredResume = generateFallbackResume(resume)
       return NextResponse.json({ tailoredResume, isFallback: true })
     }
   } catch (error: unknown) {
@@ -63,11 +63,11 @@ Return ONLY the tailored resume content in markdown format, no additional commen
   }
 }
 
-function generateFallbackResume(resume: string, jobDescription: string): string {
+function generateFallbackResume(resume: string): string {
   return `# Tailored Resume
 
 ## Professional Summary
-Experienced professional with skills matching ${jobDescription.substring(0, 50)}...
+Experienced professional ready to contribute
 
 ## Work Experience
 ${resume.split('\n').filter(line => line.includes('Experience') || line.includes('work') || line.includes('company')).slice(0, 5).join('\n') || 'Relevant experience tailored to job requirements'}
