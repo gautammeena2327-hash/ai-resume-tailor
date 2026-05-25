@@ -81,6 +81,10 @@ export default function Home() {
             <span className="text-sm text-gray-500 dark:text-gray-400">
               {tailorCount}/{FREE_TAILORS_LIMIT} free tailors used
             </span>
+            <Link href="/cover-letter" className="text-purple-600 hover:text-purple-700 text-sm font-medium flex items-center">
+              <FileText className="w-4 h-4 mr-1" />
+              Cover Letter Generator
+            </Link>
             <Link href="/pricing" className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center">
               <Crown className="w-4 h-4 mr-1" />
               Upgrade for more
