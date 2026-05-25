@@ -1,47 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Razorpay from 'razorpay'
-
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_KEY_SECRET!,
-})
 
 export async function POST(request: NextRequest) {
   try {
-    const { plan } = await request.json()
+    const { variantId } = await request.json()
 
-    // INR pricing for India - ₹1500 Pro, ₹4000 Business
-    const plans: Record<string, { amount: number; name: string }> = {
-      pro: { amount: 150000, name: 'Pro Plan - Monthly' }, // ₹1500 in paise
-      business: { amount: 400000, name: 'Business Plan - Monthly' } // ₹4000 in paise
+    if (!variantId) {
+      return NextResponse.json({ error: 'Variant ID required' }, { status: 400 })
     }
 
-    const selectedPlan = plans[plan]
-    if (!selectedPlan) {
-      return NextResponse.json({ error: 'Invalid plan' }, { status: 400 })
+    console.log('Creating checkout for variant:', variantId)
+    console.log('Store ID:', process.env.LEMONSQUEEZY_STORE_ID)
+
+    const response = await fetch('https://api.lemonsqueezy.com/v1/checkouts', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+        'Authorization': `Bearer ${process.env.LEMONSQUEEZY_API_KEY}`,
+      },
+      body: JSON.stringify({
+        data: {
+          type: 'checkouts',
+          attributes: {
+            store: process.env.LEMONSQUEEZY_STORE_ID,
+            variant: variantId,
+          },
+        },
+      }),
+    })
+
+    const data = await response.json()
+    const url = data.data?.attributes?.url
+
+    if (!response.ok || !url) {
+      console.error('LemonSqueezy response:', data)
+      return NextResponse.json({ 
+        error: 'Failed to create checkout', 
+        details: data?.errors?.[0]?.detail || data?.message || 'Unknown error',
+        status: response.status
+      }, { status: 500 })
     }
 
-    const order = await razorpay.orders.create({
-      amount: selectedPlan.amount,
-      currency: 'INR',
-      receipt: `receipt_${Date.now()}`,
-      notes: {
-        plan: plan,
-        description: selectedPlan.name
-      }
-    })
-
-    return NextResponse.json({
-      orderId: order.id,
-      amount: order.amount,
-      currency: order.currency,
-      name: selectedPlan.name,
-      keyId: process.env.RAZORPAY_KEY_ID
-    })
+    return NextResponse.json({ url })
   } catch (error: unknown) {
-    console.error('Error creating Razorpay order:', error)
+    console.error('Error creating checkout:', error)
     return NextResponse.json({ 
-      error: 'Failed to create order', 
+      error: 'Failed to create checkout', 
       details: error instanceof Error ? error.message : 'Unknown error' 
     }, { status: 500 })
   }
