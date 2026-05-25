@@ -64,8 +64,8 @@ export default function PricingPage() {
 
   const plans = [
     { name: 'Free', price: '$0', period: 'forever', tailors: 3, features: ['3 resume tailors per month', 'ATS-optimized content', 'Basic templates', 'Download as text'], plan: null },
-    { name: 'Pro', price: '₹1900', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'All templates', 'Priority support'], plan: 'pro' },
-    { name: 'Business', price: '₹4900', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing', 'Custom templates'], plan: 'business' }
+    { name: 'Pro', price: '$19', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'All templates', 'Priority support'], plan: 'pro' },
+    { name: 'Business', price: '$49', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing', 'Custom templates'], plan: 'business' }
   ]
 
   return (

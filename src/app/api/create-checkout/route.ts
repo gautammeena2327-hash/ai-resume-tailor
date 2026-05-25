@@ -11,8 +11,8 @@ export async function POST(request: NextRequest) {
     const { plan } = await request.json()
 
     const plans: Record<string, { amount: number; name: string }> = {
-      pro: { amount: 1900, name: 'Pro Plan - Monthly' },
-      business: { amount: 4900, name: 'Business Plan - Monthly' }
+      pro: { amount: 1900, name: 'Pro Plan - Monthly' }, // USD cents
+      business: { amount: 4900, name: 'Business Plan - Monthly' } // USD cents
     }
 
     const selectedPlan = plans[plan]
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     const order = await razorpay.orders.create({
       amount: selectedPlan.amount,
-      currency: 'INR',
+      currency: 'USD',
       receipt: `receipt_${Date.now()}`,
       notes: {
         plan: plan,
