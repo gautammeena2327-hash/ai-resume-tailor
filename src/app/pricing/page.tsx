@@ -1,69 +1,25 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, CreditCard } from 'lucide-react'
+import { Check, CreditCard, Mail } from 'lucide-react'
 
 export default function PricingPage() {
-  const [isLoading, setIsLoading] = useState<string | null>(null)
-
-  const handleSubscribe = async (plan: string) => {
-    setIsLoading(plan)
-    try {
-      const response = await fetch('/api/create-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan })
-      })
-      const data = await response.json()
-      
-      if (data.error) {
-        alert('Payment setup in progress. Please try again later.')
-      } else {
-        const script = document.createElement('script')
-        script.src = 'https://checkout.razorpay.com/v1/checkout.js'
-        script.async = true
-        document.body.appendChild(script)
-        script.onload = () => {
-          const options = {
-            key: data.keyId,
-            amount: data.amount,
-            currency: data.currency,
-            name: 'AI Resume Tailor',
-            description: data.name,
-            order_id: data.orderId,
-            handler: () => {
-              alert('Payment successful!')
-            },
-            theme: { color: '#3b82f6' }
-          }
-          // @ts-ignore
-          const rzp = new window.Razorpay(options)
-          rzp.open()
-        }
-      }
-    } catch {
-      alert('Something went wrong.')
-    } finally {
-      setIsLoading(null)
-    }
+  const handleContact = (plan: string) => {
+    window.location.href = `mailto:youremail@gmail.com?subject=Upgrade to ${plan} Plan&body=Hi, I want to upgrade to the ${plan} plan. Please send me payment details.`
   }
 
   const plans = [
-    { name: 'Free', price: '₹0', period: 'forever', tailors: 3, features: ['3 resume tailors per month', 'ATS-optimized content', 'Basic templates'], plan: null },
-    { name: 'Pro', price: '₹1500', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'Priority support'], plan: 'pro' },
-    { name: 'Business', price: '₹4000', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing'], plan: 'business' }
+    { name: 'Free', price: '$0', period: 'forever', tailors: 3, features: ['3 resume tailors per month', 'ATS-optimized content', 'Basic templates', 'Download as text'] },
+    { name: 'Pro', price: '$19', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'All templates', 'Priority support'] },
+    { name: 'Business', price: '$49', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing', 'Custom templates'] }
   ]
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Choose Your Plan
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            Simple, transparent pricing. Cancel anytime.
-          </p>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Choose Your Plan</h1>
+          <p className="text-gray-600 dark:text-gray-300">Simple, transparent pricing. Cancel anytime.</p>
+          <p className="text-sm text-blue-600 mt-2">Contact us for payment - automatic activation</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -85,14 +41,20 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <button
-                onClick={() => p.plan && handleSubscribe(p.plan)}
-                disabled={!p.plan || isLoading === p.plan}
-                className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center"
-              >
-                {isLoading ? <CreditCard className="w-5 h-5 mr-2 animate-spin" /> : <CreditCard className="w-5 h-5 mr-2" />}
-                {p.plan ? 'Get Started' : 'Free'}
-              </button>
+              {p.name !== 'Free' && (
+                <button
+                  onClick={() => handleContact(p.name)}
+                  className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 flex items-center justify-center"
+                >
+                  <Mail className="w-5 h-5 mr-2" />
+                  Contact for Upgrade
+                </button>
+              )}
+              {p.name === 'Free' && (
+                <button disabled className="w-full py-3 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg font-medium">
+                  Current Plan
+                </button>
+              )}
             </div>
           ))}
         </div>
