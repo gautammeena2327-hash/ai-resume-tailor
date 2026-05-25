@@ -17,9 +17,8 @@ export default function PricingPage() {
       const data = await response.json()
       
       if (data.error) {
-        alert('Payment setup pending. Please contact support.')
+        alert('Payment setup in progress. Please try again later.')
       } else {
-        // Load Razorpay checkout
         const script = document.createElement('script')
         script.src = 'https://checkout.razorpay.com/v1/checkout.js'
         script.async = true
@@ -50,9 +49,9 @@ export default function PricingPage() {
   }
 
   const plans = [
-    { name: 'Free', price: '$0', period: 'forever', tailors: 3, features: ['3 resume tailors per month', 'ATS-optimized content', 'Basic templates', 'Download as text'], plan: null },
-    { name: 'Pro', price: '$19', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'All templates', 'Priority support'], plan: 'pro' },
-    { name: 'Business', price: '$49', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing', 'Custom templates'], plan: 'business' }
+    { name: 'Free', price: '₹0', period: 'forever', tailors: 3, features: ['3 resume tailors per month', 'ATS-optimized content', 'Basic templates'], plan: null },
+    { name: 'Pro', price: '₹1500', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'Priority support'], plan: 'pro' },
+    { name: 'Business', price: '₹4000', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing'], plan: 'business' }
   ]
 
   return (

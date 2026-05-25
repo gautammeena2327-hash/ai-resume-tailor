@@ -10,9 +10,10 @@ export async function POST(request: NextRequest) {
   try {
     const { plan } = await request.json()
 
+    // INR pricing for India - ₹1500 Pro, ₹4000 Business
     const plans: Record<string, { amount: number; name: string }> = {
-      pro: { amount: 1900, name: 'Pro Plan - Monthly' }, // USD cents
-      business: { amount: 4900, name: 'Business Plan - Monthly' } // USD cents
+      pro: { amount: 150000, name: 'Pro Plan - Monthly' }, // ₹1500 in paise
+      business: { amount: 400000, name: 'Business Plan - Monthly' } // ₹4000 in paise
     }
 
     const selectedPlan = plans[plan]
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     const order = await razorpay.orders.create({
       amount: selectedPlan.amount,
-      currency: 'USD',
+      currency: 'INR',
       receipt: `receipt_${Date.now()}`,
       notes: {
         plan: plan,
