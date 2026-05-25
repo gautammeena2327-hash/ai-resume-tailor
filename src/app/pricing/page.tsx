@@ -1,88 +1,32 @@
 'use client'
 
 import { useState } from 'react'
-import { Check } from 'lucide-react'
-
-const plans = [
-  {
-    name: 'Free',
-    price: '$0',
-    period: 'forever',
-    tailors: 3,
-    features: [
-      '3 resume tailors per month',
-      'ATS-optimized content',
-      'Basic templates',
-      'Download as text',
-    ],
-    productId: null,
-  },
-  {
-    name: 'Pro',
-    price: '$19',
-    period: 'month',
-    tailors: 150,
-    features: [
-      '150 resume tailors per month',
-      'All Free features',
-      'PDF export',
-      'All templates',
-      'Priority support',
-      'Cancel anytime',
-    ],
-    productId: 'your-pro-product-id',
-    variantId: 1078654,
-    popular: true,
-  },
-  {
-    name: 'Business',
-    price: '$49',
-    period: 'month',
-    tailors: 750,
-    features: [
-      '750 resume tailors per month',
-      'All Pro features',
-      'Team sharing',
-      'Custom templates',
-      'API access',
-      '24/7 support',
-    ],
-    productId: 'your-business-product-id',
-    variantId: 1078671,
-  },
-]
+import { Check, Send } from 'lucide-react'
 
 export default function PricingPage() {
-  const [isLoading, setIsLoading] = useState<string | null>(null)
+  const [email, setEmail] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
-  const handleSubscribe = async (variantId: number | null) => {
-    if (!variantId) return
-    setIsLoading(variantId.toString())
-    try {
-      const response = await fetch('/api/create-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ variantId }),
-      })
-      const data = await response.json()
-      if (!response.ok) {
-        console.error('Checkout error:', data)
-        alert('Unable to create checkout. Please try again.')
-        return
-      }
-      const { url } = data
-      if (url) window.location.assign(url)
-    } catch (error) {
-      console.error('Error:', error)
-      alert('Something went wrong. Please try again.')
-    } finally {
-      setIsLoading(null)
-    }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    localStorage.setItem('waitlist_email', email)
+    setTimeout(() => {
+      setSubmitted(true)
+      setIsSubmitting(false)
+    }, 1000)
   }
+
+  const plans = [
+    { name: 'Free', price: '$0', period: 'forever', tailors: 3, features: ['3 resume tailors per month', 'ATS-optimized content', 'Basic templates', 'Download as text'] },
+    { name: 'Pro', price: '$19', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'All templates', 'Priority support'] },
+    { name: 'Business', price: '$49', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing', 'Custom templates'] }
+  ]
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Choose Your Plan
@@ -92,67 +36,58 @@ export default function PricingPage() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {plans.map((plan) => (
-            <div
-              key={plan.name}
-              className={`bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 ${
-                plan.popular ? 'ring-2 ring-blue-500 transform scale-105' : ''
-              }`}
-            >
-              {plan.popular && (
-                <div className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium inline-block mb-4">
-                  Most Popular
-                </div>
-              )}
-
+        <div className="grid md:grid-cols-3 gap-8">
+          {plans.map(plan => (
+            <div key={plan.name} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {plan.name}
-                </h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{plan.name}</h2>
                 <div className="mt-2">
-                  <span className="text-4xl font-bold text-gray-900 dark:text-white">
-                    {plan.price}
-                  </span>
-                  <span className="text-gray-600 dark:text-gray-400">
-                    /{plan.period}
-                  </span>
+                  <span className="text-4xl font-bold text-gray-900 dark:text-white">{plan.price}</span>
+                  <span className="text-gray-600 dark:text-gray-400">/{plan.period}</span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  {plan.tailors} resume tailors/month
-                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{plan.tailors} resume tailors/month</p>
               </div>
-
-              <ul className="space-y-3 mb-8">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start">
-                    <Check className="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 dark:text-gray-300">
-                      {feature}
-                    </span>
+              <ul className="space-y-3 mb-6">
+                {plan.features.map(f => (
+                  <li key={f} className="flex items-start">
+                    <Check className="w-5 h-5 text-green-500 mr-2 mt-0.5" />
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">{f}</span>
                   </li>
                 ))}
               </ul>
-
-              <button
-                onClick={() => handleSubscribe(plan.variantId ?? null)}
-                disabled={!plan.variantId || isLoading === plan.variantId?.toString()}
-                className={`w-full py-3 rounded-lg font-medium transition ${
-                  plan.popular
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
-                } disabled:opacity-50 disabled:cursor-not-allowed`}
-              >
-                {isLoading === plan.variantId?.toString() ? 'Loading...' : 'Get Started'}
-              </button>
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <p className="text-gray-500 dark:text-gray-400 text-sm">
-            Powered by Lemon Squeezy. Secure payments. Cancel anytime.
-          </p>
+        <div className="mt-12 bg-white dark:bg-gray-800 rounded-2xl p-8">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">
+            Get notified when Pro plans launch
+          </h3>
+          {submitted ? (
+            <div className="text-center text-green-600 dark:text-green-400">
+              Thanks! We'll notify you when Pro plans are available.
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center"
+                >
+                  {isSubmitting ? <Send className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </div>
