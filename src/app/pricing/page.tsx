@@ -9,23 +9,44 @@ export default function PricingPage() {
   const [submitted, setSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState<string | null>(null)
 
-  const handleSubscribe = async (priceId: string | null) => {
-    if (!priceId) return
-    setIsLoading(priceId)
+  const handleSubscribe = async (plan: string) => {
+    setIsLoading(plan)
     try {
       const response = await fetch('/api/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ priceId }),
+        body: JSON.stringify({ plan })
       })
       const data = await response.json()
-      if (data.url) {
-        window.location.assign(data.url)
+      
+      if (data.error) {
+        alert(`Payment setup pending. ${data.error}`)
       } else {
-        alert('Payment setup pending. Join waitlist below!')
+        // Load Razorpay checkout
+        const script = document.createElement('script')
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+        script.async = true
+        document.body.appendChild(script)
+        script.onload = () => {
+          const options = {
+            key: data.keyId,
+            amount: data.amount,
+            currency: data.currency,
+            name: 'AI Resume Tailor',
+            description: data.name,
+            order_id: data.orderId,
+            handler: (response: any) => {
+              alert('Payment successful! Order ID: ' + response.razorpay_order_id)
+            },
+            theme: { color: '#3b82f6' }
+          }
+          // @ts-ignore
+          const rzp = new window.Razorpay(options)
+          rzp.open()
+        }
       }
     } catch {
-      alert('Something went wrong. Please try again.')
+      alert('Something went wrong. Please try the waitlist below.')
     } finally {
       setIsLoading(null)
     }
@@ -42,9 +63,9 @@ export default function PricingPage() {
   }
 
   const plans = [
-    { name: 'Free', price: '$0', period: 'forever', tailors: 3, features: ['3 resume tailors per month', 'ATS-optimized content', 'Basic templates', 'Download as text'], priceId: null },
-    { name: 'Pro', price: '$19', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'All templates', 'Priority support'], priceId: 'price_pro' },
-    { name: 'Business', price: '$49', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing', 'Custom templates'], priceId: 'price_business' }
+    { name: 'Free', price: '$0', period: 'forever', tailors: 3, features: ['3 resume tailors per month', 'ATS-optimized content', 'Basic templates', 'Download as text'], plan: null },
+    { name: 'Pro', price: '₹1900', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'All templates', 'Priority support'], plan: 'pro' },
+    { name: 'Business', price: '₹4900', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing', 'Custom templates'], plan: 'business' }
   ]
 
   return (
@@ -60,18 +81,18 @@ export default function PricingPage() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {plans.map(plan => (
-            <div key={plan.name} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+          {plans.map(p => (
+            <div key={p.name} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{plan.name}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{p.name}</h2>
                 <div className="mt-2">
-                  <span className="text-4xl font-bold text-gray-900 dark:text-white">{plan.price}</span>
-                  <span className="text-gray-600 dark:text-gray-400">/{plan.period}</span>
+                  <span className="text-4xl font-bold text-gray-900 dark:text-white">{p.price}</span>
+                  <span className="text-gray-600 dark:text-gray-400">/{p.period}</span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{plan.tailors} resume tailors/month</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{p.tailors} resume tailors/month</p>
               </div>
               <ul className="space-y-3 mb-6">
-                {plan.features.map(f => (
+                {p.features.map(f => (
                   <li key={f} className="flex items-start">
                     <Check className="w-5 h-5 text-green-500 mr-2 mt-0.5" />
                     <span className="text-gray-700 dark:text-gray-300 text-sm">{f}</span>
@@ -79,12 +100,12 @@ export default function PricingPage() {
                 ))}
               </ul>
               <button
-                onClick={() => handleSubscribe(plan.priceId)}
-                disabled={!plan.priceId || isLoading === plan.priceId}
+                onClick={() => p.plan && handleSubscribe(p.plan)}
+                disabled={!p.plan || isLoading === p.plan}
                 className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center"
               >
                 {isLoading ? <CreditCard className="w-5 h-5 mr-2 animate-spin" /> : <CreditCard className="w-5 h-5 mr-2" />}
-                Get Started
+                {p.plan ? 'Get Started' : 'Free'}
               </button>
             </div>
           ))}

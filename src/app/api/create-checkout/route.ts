@@ -1,36 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Stripe from 'stripe'
+import Razorpay from 'razorpay'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-10-10',
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID!,
+  key_secret: process.env.RAZORPAY_KEY_SECRET!,
 })
 
 export async function POST(request: NextRequest) {
   try {
-    const { priceId } = await request.json()
+    const { plan } = await request.json()
 
-    if (!priceId) {
-      return NextResponse.json({ error: 'Price ID required' }, { status: 400 })
+    const plans: Record<string, { amount: number; name: string }> = {
+      pro: { amount: 1900, name: 'Pro Plan - Monthly' },
+      business: { amount: 4900, name: 'Business Plan - Monthly' }
     }
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
-        },
-      ],
-      mode: 'subscription',
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/?success=1`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/pricing?canceled=1`,
+    const selectedPlan = plans[plan]
+    if (!selectedPlan) {
+      return NextResponse.json({ error: 'Invalid plan' }, { status: 400 })
+    }
+
+    const order = await razorpay.orders.create({
+      amount: selectedPlan.amount,
+      currency: 'INR',
+      receipt: `receipt_${Date.now()}`,
+      notes: {
+        plan: plan,
+        description: selectedPlan.name
+      }
     })
 
-    return NextResponse.json({ url: session.url })
+    return NextResponse.json({
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      name: selectedPlan.name,
+      keyId: process.env.RAZORPAY_KEY_ID
+    })
   } catch (error: unknown) {
-    console.error('Error creating checkout session:', error)
+    console.error('Error creating Razorpay order:', error)
     return NextResponse.json({ 
-      error: 'Failed to create checkout', 
+      error: 'Failed to create order', 
       details: error instanceof Error ? error.message : 'Unknown error' 
     }, { status: 500 })
   }
