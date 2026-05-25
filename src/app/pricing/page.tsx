@@ -1,12 +1,35 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Send } from 'lucide-react'
+import { Check, Send, CreditCard } from 'lucide-react'
 
 export default function PricingPage() {
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState<string | null>(null)
+
+  const handleSubscribe = async (priceId: string | null) => {
+    if (!priceId) return
+    setIsLoading(priceId)
+    try {
+      const response = await fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId }),
+      })
+      const data = await response.json()
+      if (data.url) {
+        window.location.assign(data.url)
+      } else {
+        alert('Payment setup pending. Join waitlist below!')
+      }
+    } catch {
+      alert('Something went wrong. Please try again.')
+    } finally {
+      setIsLoading(null)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -19,9 +42,9 @@ export default function PricingPage() {
   }
 
   const plans = [
-    { name: 'Free', price: '$0', period: 'forever', tailors: 3, features: ['3 resume tailors per month', 'ATS-optimized content', 'Basic templates', 'Download as text'] },
-    { name: 'Pro', price: '$19', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'All templates', 'Priority support'] },
-    { name: 'Business', price: '$49', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing', 'Custom templates'] }
+    { name: 'Free', price: '$0', period: 'forever', tailors: 3, features: ['3 resume tailors per month', 'ATS-optimized content', 'Basic templates', 'Download as text'], priceId: null },
+    { name: 'Pro', price: '$19', period: 'month', tailors: 150, features: ['150 resume tailors per month', 'All Free features', 'PDF export', 'All templates', 'Priority support'], priceId: 'price_pro' },
+    { name: 'Business', price: '$49', period: 'month', tailors: 750, features: ['750 resume tailors per month', 'All Pro features', 'Team sharing', 'Custom templates'], priceId: 'price_business' }
   ]
 
   return (
@@ -55,6 +78,14 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
+              <button
+                onClick={() => handleSubscribe(plan.priceId)}
+                disabled={!plan.priceId || isLoading === plan.priceId}
+                className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center"
+              >
+                {isLoading ? <CreditCard className="w-5 h-5 mr-2 animate-spin" /> : <CreditCard className="w-5 h-5 mr-2" />}
+                Get Started
+              </button>
             </div>
           ))}
         </div>
