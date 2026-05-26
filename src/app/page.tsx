@@ -40,6 +40,16 @@ export default function Home() {
     }
     return false
   })
+  const [showResumeTool, setShowResumeTool] = useState(false)
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme')
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark')
+        return true
+      }
+    }
+    return false
+  })
   
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -186,37 +196,61 @@ export default function Home() {
                   </div>
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t.name}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300">{t.desc}</p>
-                </div>
-              ))}
-            </div>
-          </section>
+</div>
+                ))}
+              </div>
+            </section>
 
-          <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-gray-700/50">
-            <div className="flex border-b dark:border-gray-700">
+          {!showResumeTool && (
+            <div className="text-center mt-12">
               <button
-                onClick={() => setActiveTab('input')}
-                className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 ${
-                  activeTab === 'input'
-                    ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50/50 dark:hover:bg-gray-700/50'
-                }`}
+                onClick={() => setShowResumeTool(true)}
+                className="px-10 py-5 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white rounded-2xl font-bold text-xl hover:from-purple-700 hover:via-pink-700 hover:to-indigo-700 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex items-center justify-center mx-auto group"
               >
-                <FileText className="inline w-5 h-5 mr-2" />
-                Input
+                <FileText className="w-6 h-6 mr-3 group-hover:rotate-6 transition-transform" />
+                Create My Resume
               </button>
-              <button
-                onClick={() => setActiveTab('output')}
-                className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 ${
-                  activeTab === 'output'
-                    ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50/50 dark:hover:bg-gray-700/50'
-                }`}
-                disabled={!tailoredResume}
-              >
-                <Briefcase className="inline w-5 h-5 mr-2" />
-                Tailored Resume
-              </button>
+              <p className="text-gray-500 dark:text-gray-400 mt-4">
+                AI-powered resume optimization in seconds
+              </p>
             </div>
+          )}
+
+          {showResumeTool && (
+            <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-gray-700/50 animate-in slide-in-from-bottom duration-500">
+              <div className="flex justify-between items-center p-6 border-b dark:border-gray-700">
+                <div className="flex border-b dark:border-gray-700">
+                  <button
+                    onClick={() => setActiveTab('input')}
+                    className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 ${
+                      activeTab === 'input'
+                        ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50/50 dark:hover:bg-gray-700/50'
+                    }`}
+                  >
+                    <FileText className="inline w-5 h-5 mr-2" />
+                    Input
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('output')}
+                    className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 ${
+                      activeTab === 'output'
+                        ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50/50 dark:hover:bg-gray-700/50'
+                    }`}
+                    disabled={!tailoredResume}
+                  >
+                    <Briefcase className="inline w-5 h-5 mr-2" />
+                    Tailored Resume
+                  </button>
+                </div>
+                <button
+                  onClick={() => setShowResumeTool(false)}
+                  className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  ✕
+                </button>
+              </div>
 
             {activeTab === 'input' && (
               <div className="p-8">
