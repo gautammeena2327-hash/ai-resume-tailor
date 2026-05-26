@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Copy, Download, Loader2, FileText, Briefcase, Crown, Moon, Sun, Sparkles, Link2, HelpCircle, BarChart3 } from 'lucide-react'
+import { Copy, Download, Loader2, FileText, Briefcase, Crown, Moon, Sun, Sparkles, Link2, HelpCircle, BarChart3, Edit3, DollarSign, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 import jsPDF from 'jspdf'
 
@@ -125,84 +125,93 @@ export default function Home() {
         <section className="mb-16 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full mb-6">
             <Sparkles className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">AI-Powered Resume Optimization</span>
+            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">AI-Powered Career Tools</span>
           </div>
           
           <h2 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-purple-800 to-pink-800 dark:from-white dark:via-purple-200 dark:to-pink-200 bg-clip-text text-transparent mb-6 leading-tight">
-            Get Your Dream Job Faster
+            All Resume Tools in One Place
           </h2>
           
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            Our AI analyzes job descriptions and rewrites your resume to pass Applicant Tracking Systems (ATS) and catch recruiters&apos; attention.
+            Tailor your resume, generate cover letters, check scores, and more - all powered by AI.
           </p>
-          
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
-            <span className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-default">
-              ✓ ATS Optimized
-            </span>
-            <span className="px-5 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-default">
-              ✓ Keyword Enhanced
-            </span>
-            <span className="px-5 py-2.5 bg-gradient-to-r from-purple-500 to-violet-500 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-default">
-              ✓ Action Verbs
-            </span>
-          </div>
-          
-          <div className="flex justify-center items-center gap-6 text-sm">
-            <div className="px-4 py-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg shadow">
-              <span className="text-gray-500 dark:text-gray-400">{tailorCount}/{FREE_TAILORS_LIMIT} free tailors used</span>
-            </div>
-            <Link href="/cover-letter" className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 transition-colors">
-              <FileText className="w-4 h-4" />
-              Cover Letter Generator
-            </Link>
-            <Link href="/linkedin-summary" className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 transition-colors">
-              <Link2 className="w-4 h-4" />
-              LinkedIn Summary
-            </Link>
-            <Link href="/salary-estimator" className="text-green-600 hover:text-green-700 font-medium flex items-center gap-1 transition-colors">
-              <Briefcase className="w-4 h-4" />
-              Salary Estimator
-            </Link>
-            <Link href="/interview-questions" className="text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1 transition-colors">
-              <HelpCircle className="w-4 h-4" />
-              Interview Qs Predictor
-            </Link>
-            <Link href="/resume-score" className="text-amber-600 hover:text-amber-700 font-medium flex items-center gap-1 transition-colors">
-              <BarChart3 className="w-4 h-4" />
-              Free Resume Score
-            </Link>
-            <Link href="/pricing" className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 transition-colors">
-              <Crown className="w-4 h-4" />
-              Upgrade for more
-            </Link>
-          </div>
         </section>
 
-        <section className="mt-20">
-          <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-gray-900 to-purple-800 dark:from-white dark:to-purple-200 bg-clip-text text-transparent mb-4">
-            Professional Templates
-          </h2>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
-            Choose from our professionally designed templates to make your resume stand out
-          </p>
-          <div className="grid md:grid-cols-4 gap-6">
+        <section className="mb-16">
+          <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8">Choose Your Tool</h3>
+          <div className="grid md:grid-cols-3 gap-6">
             {[
-              { name: "Professional", icon: "💼", desc: "Clean & corporate style", color: "from-blue-500 to-cyan-500" },
-              { name: "Modern", icon: "✨", desc: "Contemporary design", color: "from-purple-500 to-violet-500" },
-              { name: "Executive", icon: "👔", desc: "Senior-level focus", color: "from-gray-700 to-gray-900" },
-              { name: "Creative", icon: "🎨", desc: "Design-oriented", color: "from-pink-500 to-rose-500" },
-              { name: "Technical", icon: "💻", desc: "Tech-focused", color: "from-indigo-500 to-blue-500" },
-              { name: "Academic", icon: "🎓", desc: "Education/CV", color: "from-emerald-500 to-teal-500" },
-              { name: "Minimal", icon: "📄", desc: "Simple & clean", color: "from-slate-500 to-gray-500" },
-              { name: "Infographic", icon: "📊", desc: "Visual layout", color: "from-amber-500 to-orange-500" }
-            ].map((t, i) => (
-              <div key={i} className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all text-center cursor-pointer">
-                <div className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-r ${t.color} rounded-2xl flex items-center justify-center text-2xl`}>
-                  {t.icon}
+              { 
+                title: "Resume Tailor", 
+                desc: "ATS-optimized resume tuning",
+                icon: <Edit3 className="w-8 h-8" />,
+                color: "from-purple-500 to-pink-500",
+                href: "#",
+                action: () => setShowResumeTool(true),
+                badge: "3 free/month"
+              },
+              { 
+                title: "Cover Letter Generator", 
+                desc: "Personalized cover letters",
+                icon: <FileText className="w-8 h-8" />,
+                color: "from-indigo-500 to-purple-500",
+                href: "/cover-letter",
+                badge: "Free"
+              },
+              { 
+                title: "LinkedIn Summary", 
+                desc: "Professional About section",
+                icon: <Link2 className="w-8 h-8" />,
+                color: "from-blue-500 to-cyan-500",
+                href: "/linkedin-summary",
+                badge: "Pro feature"
+              },
+              { 
+                title: "Salary Estimator", 
+                desc: "US/UK salary predictions",
+                icon: <DollarSign className="w-8 h-8" />,
+                color: "from-green-500 to-emerald-500",
+                href: "/salary-estimator",
+                badge: "Pro feature"
+              },
+              { 
+                title: "Interview Questions", 
+                desc: "Predicted questions",
+                icon: <HelpCircle className="w-8 h-8" />,
+                color: "from-orange-500 to-red-500",
+                href: "/interview-questions",
+                badge: "Business feature"
+              },
+              { 
+                title: "Resume Score", 
+                desc: "Get your resume rated (0-100)",
+                icon: <BarChart3 className="w-8 h-8" />,
+                color: "from-amber-500 to-yellow-500",
+                href: "/resume-score",
+                badge: "Free"
+              }
+            ].map((tool, i) => (
+              <div key={i} className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl shadow-2xl p-6 hover:scale-105 transition-all">
+                <div className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-r ${tool.color} rounded-2xl flex items-center justify-center text-white`}>
+                  {tool.icon}
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{t.desc}</p>
+                <h3 className="text-xl font-bold text-center text-gray-900 dark:text-white mb-2">{tool.title}</h3>
+                <p className="text-sm text-center text-gray-600 dark:text-gray-300 mb-4">{tool.desc}</p>
+                <span className="block text-center text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full mb-4">
+                  {tool.badge}
+                </span>
+                {tool.action ? (
+                  <button
+                    onClick={tool.action}
+                    className={`w-full py-2 bg-gradient-to-r ${tool.color} text-white rounded-xl font-medium hover:opacity-90 transition-all`}
+                  >
+                    Open Tool
+                  </button>
+                ) : (
+                  <Link href={tool.href} className={`block w-full py-2 bg-gradient-to-r ${tool.color} text-white rounded-xl font-medium hover:opacity-90 transition-all text-center`}>
+                    Open Tool
+                  </Link>
+                )}
               </div>
             ))}
           </div>
