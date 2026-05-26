@@ -54,6 +54,19 @@ export default function Home() {
     }
   }, [isDark])
 
+  useEffect(() => {
+    if (showResumeTool) {
+      setTimeout(() => {
+        const el = document.getElementById('resume-tool')
+        el?.scrollIntoView({ behavior: 'smooth' })
+      }, 100)
+    }
+  }, [showResumeTool])
+
+  const openResumeTool = () => {
+    setShowResumeTool(true)
+  }
+
   const handleSubmit = async () => {
     if (!resume || !jobDescription || tailorCount >= FREE_TAILORS_LIMIT) return
 
@@ -141,14 +154,14 @@ export default function Home() {
           <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8">Choose Your Tool</h3>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { 
+{
                 title: "Resume Tailor", 
                 desc: "ATS-optimized resume tuning",
                 icon: <Edit3 className="w-8 h-8" />,
                 color: "from-purple-500 to-pink-500",
                 href: "#",
-                action: () => setShowResumeTool(true),
-                badge: "3 free/month"
+                badge: "3 free/month",
+                action: openResumeTool
               },
               { 
                 title: "Cover Letter Generator", 
@@ -217,10 +230,10 @@ export default function Home() {
           </div>
         </section>
 
-        {!showResumeTool && (
+{!showResumeTool && (
           <div className="text-center mt-12">
             <button
-              onClick={() => setShowResumeTool(true)}
+              onClick={openResumeTool}
               className="px-10 py-5 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white rounded-2xl font-bold text-xl hover:from-purple-700 hover:via-pink-700 hover:to-indigo-700 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex items-center justify-center mx-auto group"
             >
               <FileText className="w-6 h-6 mr-3 group-hover:rotate-6 transition-transform" />
@@ -233,7 +246,7 @@ export default function Home() {
         )}
 
         {showResumeTool && (
-          <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-gray-700/50 animate-in slide-in-from-bottom duration-500">
+          <div id="resume-tool" className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-gray-700/50 animate-in slide-in-from-bottom duration-500">
             <div className="flex justify-between items-center p-6 border-b dark:border-gray-700">
               <div className="flex border-b dark:border-gray-700">
                 <button
