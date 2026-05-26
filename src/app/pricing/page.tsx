@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, CreditCard } from 'lucide-react'
+import { Check } from 'lucide-react'
 
 const plans = [
   {
