@@ -8,9 +8,9 @@ const plans = [
     name: 'Free',
     price: '$0',
     period: 'forever',
-    tailors: 3,
+    tailors: 2,
     features: [
-      '3 resume tailors per month',
+      '2 resume tailors per month',
       'ATS-optimized content',
       'Basic templates',
       'Download as text',

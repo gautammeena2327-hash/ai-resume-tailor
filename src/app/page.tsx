@@ -5,7 +5,7 @@ import { Copy, Download, Loader2, FileText, Briefcase, Crown, Moon, Sun, Sparkle
 import Link from 'next/link'
 import jsPDF from 'jspdf'
 
-const FREE_TAILORS_LIMIT = 3
+const FREE_TAILORS_LIMIT = 2
 
 export default function Home() {
   const [resume, setResume] = useState('')
@@ -160,7 +160,7 @@ export default function Home() {
                 icon: <Edit3 className="w-8 h-8" />,
                 color: "from-purple-500 to-pink-500",
                 href: "#",
-                badge: "3 free/month",
+                badge: "2 free/month",
                 action: openResumeTool
               },
               { 
