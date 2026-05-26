@@ -45,6 +45,8 @@ const plans = [
     features: [
       '750 resume tailors per month',
       'All Pro features',
+      'LinkedIn Summary Generator',
+      'Salary Estimator',
       'Team sharing',
       'Custom templates',
       'API access',
