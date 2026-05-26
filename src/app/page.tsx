@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Copy, Download, Loader2, FileText, Briefcase, Crown, Moon, Sun, Sparkles, Link2 } from 'lucide-react'
+import { Copy, Download, Loader2, FileText, Briefcase, Crown, Moon, Sun, Sparkles, Link2, HelpCircle, BarChart3 } from 'lucide-react'
 import Link from 'next/link'
 import jsPDF from 'jspdf'
 
@@ -157,8 +157,20 @@ export default function Home() {
               Cover Letter Generator
             </Link>
             <Link href="/linkedin-summary" className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 transition-colors">
-<Link2 className="w-4 h-4" />
-               LinkedIn Summary Generator
+              <Link2 className="w-4 h-4" />
+              LinkedIn Summary
+            </Link>
+            <Link href="/salary-estimator" className="text-green-600 hover:text-green-700 font-medium flex items-center gap-1 transition-colors">
+              <Briefcase className="w-4 h-4" />
+              Salary Estimator
+            </Link>
+            <Link href="/interview-questions" className="text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1 transition-colors">
+              <HelpCircle className="w-4 h-4" />
+              Interview Qs Predictor
+            </Link>
+            <Link href="/resume-score" className="text-amber-600 hover:text-amber-700 font-medium flex items-center gap-1 transition-colors">
+              <BarChart3 className="w-4 h-4" />
+              Free Resume Score
             </Link>
             <Link href="/pricing" className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 transition-colors">
               <Crown className="w-4 h-4" />
