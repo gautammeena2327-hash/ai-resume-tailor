@@ -233,6 +233,8 @@ export default function Home() {
                     <option value="modern">Modern</option>
                     <option value="executive">Executive</option>
                     <option value="creative">Creative</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="technical">Technical</option>
                   </select>
                 </div>
 
@@ -409,9 +411,9 @@ export default function Home() {
                 <Link href="/terms" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
                   Terms of Service
                 </Link>
-                <a href="mailto:support@ai-resume-tailor.com" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
+                <Link href="/contact" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
                   Contact
-                </a>
+                </Link>
               </div>
             </footer>
          </div>
