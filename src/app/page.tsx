@@ -136,31 +136,27 @@ export default function Home() {
         <section className="mb-16 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full mb-6">
             <Sparkles className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">AI-Powered Career Tools</span>
+            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">AI-Powered Resume Optimization</span>
           </div>
           
           <h2 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-purple-800 to-pink-800 dark:from-white dark:via-purple-200 dark:to-pink-200 bg-clip-text text-transparent mb-6 leading-tight">
-            All Resume Tools in One Place
+            Tailor Your Resume For Every Job In Seconds
           </h2>
           
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            Tailor your resume, generate cover letters, check scores, and more - all powered by AI.
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+            ATS-optimized resumes powered by AI — without fake experience.
           </p>
           
-          <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12">
-            {[
-              { icon: '🔒', text: 'Secure Resume Upload', color: 'from-blue-500 to-cyan-500' },
-              { icon: '🎯', text: 'ATS Optimized', color: 'from-green-500 to-emerald-500' },
-              { icon: '✅', text: 'No Fake Experience', color: 'from-purple-500 to-violet-500' },
-              { icon: '📄', text: 'PDF Export', color: 'from-pink-500 to-rose-500' },
-              { icon: '🤖', text: 'AI-Powered Matching', color: 'from-indigo-500 to-blue-500' },
-              { icon: '🛡️', text: 'Privacy First', color: 'from-amber-500 to-orange-500' }
-            ].map((item, i) => (
-              <div key={i} className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 flex items-center gap-3 shadow-lg hover:scale-105 transition-all">
-                <span className="text-2xl">{item.icon}</span>
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{item.text}</span>
-              </div>
-            ))}
+          <div className="flex flex-wrap justify-center gap-3 mb-10">
+            <span className="px-5 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-default">
+              ✓ Land More Interviews
+            </span>
+            <span className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-default">
+              ✓ ATS Optimized
+            </span>
+            <span className="px-5 py-2.5 bg-gradient-to-r from-purple-500 to-violet-500 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-default">
+              ✓ Never Fabricated
+            </span>
           </div>
         </section>
 
