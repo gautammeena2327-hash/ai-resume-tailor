@@ -225,12 +225,25 @@ export default function Home() {
                     Open Tool
                   </Link>
                 )}
-              </div>
+</div>
             ))}
           </div>
         </section>
 
-{!showResumeTool && (
+        <section className="mb-16 text-center">
+          <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 rounded-3xl p-8 shadow-2xl">
+            <Crown className="w-12 h-12 mx-auto mb-4 text-yellow-400" />
+            <h3 className="text-3xl font-bold text-white mb-4">Unlock All Features</h3>
+            <p className="text-white/90 mb-6 max-w-2xl mx-auto">
+              Go Pro for 150 resume tailors/month, LinkedIn Summary, Salary Estimator, and more!
+            </p>
+            <Link href="/pricing" className="inline-block px-8 py-3 bg-white text-purple-700 rounded-xl font-bold text-lg hover:bg-gray-100 shadow-lg hover:scale-105 transition-all">
+              Upgrade Now - Just $19/month
+            </Link>
+          </div>
+        </section>
+
+        {!showResumeTool && (
           <div className="text-center mt-12">
             <button
               onClick={openResumeTool}
