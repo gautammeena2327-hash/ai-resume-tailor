@@ -160,6 +160,19 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="mb-16 text-center">
+          <button
+            onClick={openResumeTool}
+            className="px-12 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl font-bold text-xl hover:from-green-600 hover:to-emerald-600 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 inline-flex items-center gap-3 mx-auto"
+          >
+            <Sparkles className="w-6 h-6" />
+            Try Free - Tailor My Resume
+          </button>
+          <p className="text-gray-500 dark:text-gray-400 mt-3 text-sm">
+            No credit card required • AI-powered • Instant results
+          </p>
+        </section>
+
         <section className="mb-16">
           <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8">Choose Your Tool</h3>
           <div className="grid md:grid-cols-3 gap-6">
