@@ -259,7 +259,7 @@ export default function Home() {
         )}
 
         {showResumeTool && (
-          <div id="resume-tool" className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-gray-700/50 animate-in slide-in-from-bottom duration-500">
+          <div id="resume-tool" className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-gray-700/50">
             <div className="flex justify-between items-center p-6 border-b dark:border-gray-700">
               <div className="flex border-b dark:border-gray-700">
                 <button
