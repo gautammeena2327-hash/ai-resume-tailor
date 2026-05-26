@@ -214,6 +214,27 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="mb-16">
+          <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {[
+              { icon: '🔒', text: 'Secure Resume Upload', desc: 'Your data stays private' },
+              { icon: '🎯', text: 'ATS Optimized', desc: 'Beat applicant tracking systems' },
+              { icon: '✅', text: 'No Fake Experience', desc: 'Real, honest achievements only' },
+              { icon: '📄', text: 'PDF Export', desc: 'Ready-to-send formats' },
+              { icon: '🤝', text: 'Realistic Results', desc: 'Truthful, compelling content' },
+              { icon: '🛡️', text: 'Privacy First', desc: 'End-to-end encrypted' }
+            ].map((item, i) => (
+              <div key={i} className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 flex items-start gap-3 shadow-lg hover:scale-105 transition-all">
+                <span className="text-xl mt-1">{item.icon}</span>
+                <div>
+                  <p className="font-medium text-gray-900 dark:text-white text-sm">{item.text}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="mt-20">
           <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-gray-900 to-purple-800 dark:from-white dark:to-purple-200 bg-clip-text text-transparent mb-12">
             What Our Users Say
