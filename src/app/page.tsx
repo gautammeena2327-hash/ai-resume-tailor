@@ -395,12 +395,26 @@ export default function Home() {
              </div>
            </section>
 
-           <div className="mt-16 text-center">
-             <p className="text-gray-500 dark:text-gray-400 text-sm">
-               Powered by OpenAI - Make your resume stand out to employers and ATS systems
-             </p>
-           </div>
-        </div>
+<div className="mt-16 text-center">
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
+                Powered by OpenAI - Make your resume stand out to employers and ATS systems
+              </p>
+            </div>
+
+            <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex flex-wrap justify-center gap-6 text-sm">
+                <Link href="/privacy" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
+                  Privacy Policy
+                </Link>
+                <Link href="/terms" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
+                  Terms of Service
+                </Link>
+                <a href="mailto:support@ai-resume-tailor.com" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
+                  Contact
+                </a>
+              </div>
+            </footer>
+         </div>
       </div>
     )
 }

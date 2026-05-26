@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "AI Resume Tailor - Professional Resume Optimization",
   description: "Optimize your resume for any job with AI-powered tailoring and ATS optimization",
+  keywords: "resume, AI, tailoring, ATS, job, optimization, cover letter",
 };
 
 export async function generateViewport() {
