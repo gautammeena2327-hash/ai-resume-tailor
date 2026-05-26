@@ -149,29 +149,6 @@ export default function Home() {
         </section>
 
         <section className="mb-16">
-          <div className="max-w-4xl mx-auto">
-            <div className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 rounded-3xl overflow-hidden shadow-2xl">
-              <div className="aspect-video bg-gray-900/20 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-20 h-20 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
-                    <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" fillRule="evenodd"/>
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Watch Demo</h3>
-                  <p className="text-white/80">See how AI Resume Tailor works</p>
-                </div>
-              </div>
-              <div className="absolute top-4 left-4 flex gap-2">
-                <span className="px-3 py-1 bg-white/20 text-white text-xs rounded-full">Upload Resume</span>
-                <span className="px-3 py-1 bg-white/20 text-white text-xs rounded-full">AI Tailoring</span>
-                <span className="px-3 py-1 bg-white/20 text-white text-xs rounded-full">ATS Score</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mb-16">
           <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8">Choose Your Tool</h3>
           <div className="grid md:grid-cols-3 gap-6">
             {[
