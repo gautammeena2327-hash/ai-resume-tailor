@@ -174,6 +174,24 @@ export default function Home() {
         </section>
 
         <section className="mb-16">
+          <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {[
+              { icon: '🔒', text: 'Secure Resume Upload', color: 'from-blue-500 to-cyan-500' },
+              { icon: '🎯', text: 'ATS Optimized', color: 'from-green-500 to-emerald-500' },
+              { icon: '✅', text: 'No Fake Experience', color: 'from-purple-500 to-violet-500' },
+              { icon: '📄', text: 'PDF Export', color: 'from-pink-500 to-rose-500' },
+              { icon: '🤝', text: 'Realistic Results', color: 'from-indigo-500 to-blue-500' },
+              { icon: '🛡️', text: 'Privacy First', color: 'from-amber-500 to-orange-500' }
+            ].map((item, i) => (
+              <div key={i} className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 flex items-center gap-3 shadow-lg hover:scale-105 transition-all">
+                <span className="text-2xl">{item.icon}</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-16">
           <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8">Choose Your Tool</h3>
           <div className="grid md:grid-cols-3 gap-6">
             {[
