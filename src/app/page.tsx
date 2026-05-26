@@ -235,14 +235,24 @@ export default function Home() {
             <p className="text-white/90 mb-6 max-w-2xl mx-auto">
               Go Pro for 150 resume tailors/month, LinkedIn Summary, Salary Estimator, and more!
             </p>
-            <Link href="/pricing" className="inline-block px-8 py-3 bg-white text-purple-700 rounded-xl font-bold text-lg hover:bg-gray-100 shadow-lg hover:scale-105 transition-all">
-              Upgrade Now - Just $19/month
-            </Link>
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              <Link href="/pricing" className="inline-block px-8 py-3 bg-white text-purple-700 rounded-xl font-bold text-lg hover:bg-gray-100 shadow-lg hover:scale-105 transition-all">
+                Upgrade Now - Just $19/month
+              </Link>
+              <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium">
+                2 free/month
+              </span>
+            </div>
           </div>
         </section>
 
         {!showResumeTool && (
           <div className="text-center mt-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium">
+                🎉 Start Free - No credit card required
+              </span>
+            </div>
             <button
               onClick={openResumeTool}
               className="px-10 py-5 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white rounded-2xl font-bold text-xl hover:from-purple-700 hover:via-pink-700 hover:to-indigo-700 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex items-center justify-center mx-auto group"
