@@ -235,7 +235,105 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mt-20">
+        <section className="mb-16">
+          <h3 className="text-2xl font-bold text-center text-gray-900 dark:text-white mb-8">Choose Your Tool</h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { 
+                title: "Resume Tailor", 
+                desc: "ATS-optimized resume tuning",
+                icon: <Edit3 className="w-8 h-8" />,
+                color: "from-purple-500 to-pink-500",
+                href: "#",
+                badge: "2 free/month",
+                action: openResumeTool
+              },
+              { 
+                title: "Cover Letter Generator", 
+                desc: "Personalized cover letters",
+                icon: <FileText className="w-8 h-8" />,
+                color: "from-indigo-500 to-purple-500",
+                href: "/cover-letter",
+                badge: "Free"
+              },
+              { 
+                title: "LinkedIn Summary", 
+                desc: "Professional About section",
+                icon: <Link2 className="w-8 h-8" />,
+                color: "from-blue-500 to-cyan-500",
+                href: "/linkedin-summary",
+                badge: "Pro feature"
+              },
+              { 
+                title: "Salary Estimator", 
+                desc: "US/UK salary predictions",
+                icon: <DollarSign className="w-8 h-8" />,
+                color: "from-green-500 to-emerald-500",
+                href: "/salary-estimator",
+                badge: "Pro feature"
+              },
+              { 
+                title: "Interview Questions", 
+                desc: "Predicted questions",
+                icon: <HelpCircle className="w-8 h-8" />,
+                color: "from-orange-500 to-red-500",
+                href: "/interview-questions",
+                badge: "Business feature"
+              },
+              { 
+                title: "Resume Score", 
+                desc: "Get your resume rated (0-100)",
+                icon: <BarChart3 className="w-8 h-8" />,
+                color: "from-amber-500 to-yellow-500",
+                href: "/resume-score",
+                badge: "Free"
+              }
+            ].map((tool, i) => (
+              <div key={i} className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl shadow-2xl p-6 hover:scale-105 transition-all">
+                <div className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-r ${tool.color} rounded-2xl flex items-center justify-center text-white`}>
+                  {tool.icon}
+                </div>
+                <h3 className="text-xl font-bold text-center text-gray-900 dark:text-white mb-2">{tool.title}</h3>
+                <p className="text-sm text-center text-gray-600 dark:text-gray-300 mb-4">{tool.desc}</p>
+                <span className="block text-center text-xs px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full mb-4">
+                  {tool.badge}
+                </span>
+                {tool.action ? (
+                  <button
+                    onClick={tool.action}
+                    className={`w-full py-2 bg-gradient-to-r ${tool.color} text-white rounded-xl font-medium hover:opacity-90 transition-all`}
+                  >
+                    Open Tool
+                  </button>
+                ) : (
+                  <Link href={tool.href} className={`block w-full py-2 bg-gradient-to-r ${tool.color} text-white rounded-xl font-medium hover:opacity-90 transition-all text-center`}>
+                    Open Tool
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-16 text-center">
+          <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 rounded-3xl p-8 shadow-2xl">
+            <Crown className="w-12 h-12 mx-auto mb-4 text-yellow-400" />
+            <h3 className="text-3xl font-bold text-white mb-4">Unlock All Features</h3>
+            <p className="text-white/90 mb-6 max-w-2xl mx-auto">
+              Go Pro for 150 resume tailors/month, LinkedIn Summary, Salary Estimator, and more!
+            </p>
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              <Link href="/pricing" className="inline-block px-8 py-3 bg-white text-purple-700 rounded-xl font-bold text-lg hover:bg-gray-100 shadow-lg hover:scale-105 transition-all">
+                Upgrade Now - Just $19/month
+              </Link>
+              <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium">
+                2 free/month
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {!showResumeTool && (
           <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-gray-900 to-purple-800 dark:from-white dark:to-purple-200 bg-clip-text text-transparent mb-12">
             What Our Users Say
           </h2>
