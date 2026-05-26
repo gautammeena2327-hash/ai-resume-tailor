@@ -56,10 +56,8 @@ export default function Home() {
 
   useEffect(() => {
     if (showResumeTool) {
-      setTimeout(() => {
-        const el = document.getElementById('resume-tool')
-        el?.scrollIntoView({ behavior: 'smooth' })
-      }, 100)
+      const el = document.getElementById('resume-tool')
+      el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
   }, [showResumeTool])
 
