@@ -133,61 +133,84 @@ export default function Home() {
           </div>
         </header>
 
-        <section className="mb-16 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full mb-6">
-            <Sparkles className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">AI-Powered Resume Optimization</span>
-          </div>
-          
-          <h2 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-purple-800 to-pink-800 dark:from-white dark:via-purple-200 dark:to-pink-200 bg-clip-text text-transparent mb-6 leading-tight">
-            Tailor Your Resume For Every Job In Seconds
-          </h2>
-          
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            ATS-optimized resumes powered by AI — without fake experience.
-          </p>
-          
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
-            <span className="px-5 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-default">
-              ✓ Land More Interviews
-            </span>
-            <span className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-default">
-              ✓ ATS Optimized
-            </span>
-            <span className="px-5 py-2.5 bg-gradient-to-r from-purple-500 to-violet-500 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-default">
-              ✓ Never Fabricated
-            </span>
-          </div>
-        </section>
-
-        <section className="mb-16 text-center">
-          <button
-            onClick={openResumeTool}
-            className="px-12 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl font-bold text-xl hover:from-green-600 hover:to-emerald-600 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 inline-flex items-center gap-3 mx-auto"
-          >
-            <Sparkles className="w-6 h-6" />
-            Try Free - Tailor My Resume
-          </button>
-          <p className="text-gray-500 dark:text-gray-400 mt-3 text-sm">
-            No credit card required • AI-powered • Instant results
-          </p>
-        </section>
-
         <section className="mb-16">
-          <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-            {[
-              { icon: '🔒', text: 'Secure Resume Upload', color: 'from-blue-500 to-cyan-500' },
-              { icon: '🎯', text: 'ATS Optimized', color: 'from-green-500 to-emerald-500' },
-              { icon: '✅', text: 'No Fake Experience', color: 'from-purple-500 to-violet-500' },
-              { icon: '📄', text: 'PDF Export', color: 'from-pink-500 to-rose-500' },
-              { icon: '🤝', text: 'Realistic Results', color: 'from-indigo-500 to-blue-500' },
-              { icon: '🛡️', text: 'Privacy First', color: 'from-amber-500 to-orange-500' }
-            ].map((item, i) => (
-              <div key={i} className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 flex items-center gap-3 shadow-lg hover:scale-105 transition-all">
-                <span className="text-2xl">{item.icon}</span>
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{item.text}</span>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-left">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-full mb-6">
+                <Sparkles className="w-4 h-4 text-purple-600" />
+                <span className="text-sm font-medium text-purple-700 dark:text-purple-300">AI-Powered Resume Optimization</span>
               </div>
-            ))}
+              
+              <h2 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-purple-800 to-pink-800 dark:from-white dark:via-purple-200 dark:to-pink-200 bg-clip-text text-transparent mb-6 leading-tight">
+                Tailor Your Resume For Every Job In Seconds
+              </h2>
+              
+              <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">
+                ATS-optimized resumes powered by AI — without fake experience.
+              </p>
+              
+              <div className="flex flex-wrap gap-3 mb-8">
+                <span className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full text-sm font-medium shadow-lg">
+                  ✓ Land More Interviews
+                </span>
+                <span className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-full text-sm font-medium shadow-lg">
+                  ✓ ATS Optimized
+                </span>
+                <span className="px-4 py-2 bg-gradient-to-r from-purple-500 to-violet-500 text-white rounded-full text-sm font-medium shadow-lg">
+                  ✓ Never Fabricated
+                </span>
+              </div>
+              
+              <button
+                onClick={openResumeTool}
+                className="px-10 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl font-bold text-lg hover:from-green-600 hover:to-emerald-600 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 inline-flex items-center gap-3"
+              >
+                <Sparkles className="w-5 h-5" />
+                Try Free - Tailor My Resume
+              </button>
+              <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">
+                No credit card required • AI-powered • Instant results
+              </p>
+            </div>
+
+            <div className="relative">
+              <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl shadow-2xl p-6 transform rotate-1 hover:rotate-0 transition-all duration-500">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-bold text-gray-900 dark:text-white">ATS Score Preview</h4>
+                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">85</span>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-600 dark:text-gray-300">Keyword Match</span>
+                      <span className="text-green-600 font-medium">78%</span>
+                    </div>
+                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style={{ width: '78%' }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-600 dark:text-gray-300">ATS Compatibility</span>
+                      <span className="text-blue-600 font-medium">92%</span>
+                    </div>
+                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{ width: '92%' }}></div>
+                    </div>
+                  </div>
+                  <div className="pt-3 border-t dark:border-gray-700">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Top Keywords Added:</p>
+                    <div className="flex flex-wrap gap-1">
+                      <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded text-xs">Project Management</span>
+                      <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded text-xs">React.js</span>
+                      <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded text-xs">Agile</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
