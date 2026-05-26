@@ -146,6 +146,22 @@ export default function Home() {
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
             Tailor your resume, generate cover letters, check scores, and more - all powered by AI.
           </p>
+          
+          <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12">
+            {[
+              { icon: '🔒', text: 'Secure Resume Upload', color: 'from-blue-500 to-cyan-500' },
+              { icon: '🎯', text: 'ATS Optimized', color: 'from-green-500 to-emerald-500' },
+              { icon: '✅', text: 'No Fake Experience', color: 'from-purple-500 to-violet-500' },
+              { icon: '📄', text: 'PDF Export', color: 'from-pink-500 to-rose-500' },
+              { icon: '🤖', text: 'AI-Powered Matching', color: 'from-indigo-500 to-blue-500' },
+              { icon: '🛡️', text: 'Privacy First', color: 'from-amber-500 to-orange-500' }
+            ].map((item, i) => (
+              <div key={i} className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 flex items-center gap-3 shadow-lg hover:scale-105 transition-all">
+                <span className="text-2xl">{item.icon}</span>
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{item.text}</span>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="mb-16">
