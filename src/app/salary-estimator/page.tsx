@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Copy, Download, Loader2, Crown, Briefcase } from 'lucide-react'
+import { Copy, Download, Loader2, Crown, Briefcase, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 const FREE_ESTIMATES_LIMIT = 1
@@ -74,13 +74,18 @@ export default function SalaryEstimatorPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
-            Salary Estimator
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            Get salary estimates for US and UK based on job requirements
-          </p>
+        <div className="flex items-center mb-8">
+          <Link href="/" className="p-2 rounded-lg hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors mr-4">
+            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          </Link>
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
+              Salary Estimator
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300">
+              Get salary estimates for US and UK based on job requirements
+            </p>
+          </div>
         </div>
 
         <div className="flex justify-center items-center gap-6 text-sm mb-8">

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Copy, Download, Loader2, Crown, FileText } from 'lucide-react'
+import { Copy, Download, Loader2, Crown, FileText, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 const FREE_SUMMARIES_LIMIT = 2
@@ -74,13 +74,18 @@ export default function LinkedInSummaryPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-purple-900 dark:to-indigo-900 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent mb-4">
-            LinkedIn Summary Generator
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            Generate a professional LinkedIn About section from your resume
-          </p>
+        <div className="flex items-center mb-8">
+          <Link href="/" className="p-2 rounded-lg hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors mr-4">
+            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          </Link>
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+              LinkedIn Summary Generator
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300">
+              Generate a professional LinkedIn About section from your resume
+            </p>
+          </div>
         </div>
 
         <div className="flex justify-center items-center gap-6 text-sm mb-8">

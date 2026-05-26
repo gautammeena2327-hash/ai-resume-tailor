@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Copy, Download, Loader2, BarChart3 } from 'lucide-react'
+import { Copy, Download, Loader2, BarChart3, ArrowLeft } from 'lucide-react'
+
+import Link from 'next/link'
 
 export default function ResumeScorePage() {
   const [resume, setResume] = useState('')
@@ -53,13 +55,18 @@ export default function ResumeScorePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-600 via-yellow-600 to-orange-600 bg-clip-text text-transparent mb-4">
-            Resume Score Checker
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            Get instant feedback and a score (0-100) for your resume
-          </p>
+        <div className="flex items-center mb-8">
+          <Link href="/" className="p-2 rounded-lg hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors mr-4">
+            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          </Link>
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-600 via-yellow-600 to-orange-600 bg-clip-text text-transparent mb-2">
+              Resume Score Checker
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300">
+              Get instant feedback and a score (0-100) for your resume
+            </p>
+          </div>
         </div>
 
         {!showTool && (

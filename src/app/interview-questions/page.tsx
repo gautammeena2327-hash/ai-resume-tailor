@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Copy, Download, Loader2, Crown, HelpCircle } from 'lucide-react'
+import { Copy, Download, Loader2, Crown, HelpCircle, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 
 const FREE_QUESTIONS_LIMIT = 1
@@ -75,13 +75,18 @@ export default function InterviewQuestionsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 bg-clip-text text-transparent mb-4">
-            Interview Questions Predictor
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            Predict likely interview questions based on job description
-          </p>
+        <div className="flex items-center mb-8">
+          <Link href="/" className="p-2 rounded-lg hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors mr-4">
+            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          </Link>
+          <div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 bg-clip-text text-transparent mb-2">
+              Interview Questions Predictor
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300">
+              Predict likely interview questions based on job description
+            </p>
+          </div>
         </div>
 
         <div className="flex justify-center items-center gap-6 text-sm mb-8">

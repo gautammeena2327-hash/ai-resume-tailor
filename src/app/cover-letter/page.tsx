@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Copy, Download, Loader2, FileText } from 'lucide-react'
+import { Copy, Download, Loader2, FileText, ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 
 export default function CoverLetterPage() {
   const [resume, setResume] = useState('')
@@ -54,13 +55,18 @@ export default function CoverLetterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Cover Letter Generator
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            Generate personalized cover letters in seconds
-          </p>
+        <div className="flex items-center mb-8">
+          <Link href="/" className="p-2 rounded-lg hover:bg-white/50 dark:hover:bg-gray-800/50 transition-colors mr-4">
+            <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          </Link>
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              Cover Letter Generator
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300">
+              Generate personalized cover letters in seconds
+            </p>
+          </div>
         </div>
 
         {!showTool && (
