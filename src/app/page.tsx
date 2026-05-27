@@ -333,8 +333,8 @@ export default function Home() {
           </div>
         </section>
 
-        {!showResumeTool && (
-          <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-gray-900 to-purple-800 dark:from-white dark:to-purple-200 bg-clip-text text-transparent mb-12">
+        <section className="mt-20 text-center">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-purple-800 dark:from-white dark:to-purple-200 bg-clip-text text-transparent mb-12">
             What Our Users Say
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
