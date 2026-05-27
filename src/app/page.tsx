@@ -333,6 +333,153 @@ export default function Home() {
           </div>
         </section>
 
+        {showResumeTool && (
+          <div id="resume-tool" className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-gray-700/50">
+            <div className="flex justify-between items-center p-6 border-b dark:border-gray-700">
+              <div className="flex border-b dark:border-gray-700">
+                <button
+                  onClick={() => setActiveTab('input')}
+                  className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 ${
+                    activeTab === 'input'
+                      ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50/50 dark:hover:bg-gray-700/50'
+                  }`}
+                >
+                  <FileText className="inline w-5 h-5 mr-2" />
+                  Input
+                </button>
+                <button
+                  onClick={() => setActiveTab('output')}
+                  className={`flex-1 py-4 px-6 text-center font-medium transition-all duration-300 ${
+                    activeTab === 'output'
+                      ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50 dark:bg-purple-900/20'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50/50 dark:hover:bg-gray-700/50'
+                  }`}
+                  disabled={!tailoredResume}
+                >
+                  <Briefcase className="inline w-5 h-5 mr-2" />
+                  Tailored Resume
+                </button>
+              </div>
+              <button
+                onClick={() => setShowResumeTool(false)}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            {activeTab === 'input' && (
+              <div className="p-8">
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Template Style
+                  </label>
+                  <select
+                    value={template}
+                    onChange={(e) => setTemplate(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 transition-all"
+                  >
+                    <option value="professional">Professional</option>
+                    <option value="modern">Modern</option>
+                    <option value="executive">Executive</option>
+                    <option value="creative">Creative</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="technical">Technical</option>
+                  </select>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Your Current Resume
+                    </label>
+                    <textarea
+                      value={resume}
+                      onChange={(e) => setResume(e.target.value)}
+                      placeholder="Paste your current resume here..."
+                      className="w-full h-80 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 resize-none transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Job Description
+                    </label>
+                    <textarea
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value)}
+                      placeholder="Paste the job description here..."
+                      className="w-full h-80 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 resize-none transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-8 text-center">
+                  <button
+                    onClick={handleSubmit}
+                    disabled={!resume || !jobDescription || isLoading || tailorCount >= FREE_TAILORS_LIMIT}
+                    className="px-10 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-medium hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center mx-auto shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Tailoring Resume...
+                      </>
+                    ) : tailorCount >= FREE_TAILORS_LIMIT ? (
+                      'Upgrade to continue'
+                    ) : (
+                      '✨ Tailor My Resume'
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'output' && (
+              <div className="p-8">
+                {isFallback && (
+                  <div className="mb-4 p-4 bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/20 dark:to-orange-900/20 text-yellow-700 dark:text-yellow-300 rounded-xl text-sm">
+                    Note: OpenAI API unavailable. Showing template resume.
+                  </div>
+                )}
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    Your Tailored Resume
+                  </h2>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={copyToClipboard}
+                      className="px-5 py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center transition-all"
+                    >
+                      <Copy className="w-4 h-4 mr-2" />
+                      Copy
+                    </button>
+                    <button
+                      onClick={downloadAsPDF}
+                      className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 flex items-center transition-all shadow-lg"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      PDF
+                    </button>
+                    <button
+                      onClick={downloadAsText}
+                      className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 flex items-center transition-all shadow-lg"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      TXT
+                    </button>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 max-h-96 overflow-y-auto">
+                  <pre className="whitespace-pre-wrap text-gray-800 dark:text-gray-200 font-mono text-sm">{tailoredResume}</pre>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         <section className="mt-20 text-center">
           <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-purple-800 dark:from-white dark:to-purple-200 bg-clip-text text-transparent mb-12">
             What Our Users Say
