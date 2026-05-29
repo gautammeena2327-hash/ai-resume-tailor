@@ -5,8 +5,6 @@ import { Copy, Download, Loader2, FileText, Briefcase, Crown, Moon, Sun, Sparkle
 import Link from 'next/link'
 import jsPDF from 'jspdf'
 
-const FREE_TAILORS_LIMIT = 3
-
 export default function Home() {
   const [resume, setResume] = useState('')
   const [jobDescription, setJobDescription] = useState('')
@@ -14,21 +12,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [template, setTemplate] = useState('professional')
   const [activeTab, setActiveTab] = useState('input')
-  const [tailorCount, setTailorCount] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('tailorCount')
-      const lastReset = localStorage.getItem('lastReset')
-      const now = new Date().getTime()
-      
-      if (lastReset && now - parseInt(lastReset) > 30 * 24 * 60 * 60 * 1000) {
-        localStorage.setItem('tailorCount', '0')
-        localStorage.setItem('lastReset', now.toString())
-        return 0
-      }
-      return parseInt(saved || '0')
-    }
-    return 0
-  })
   const [isFallback, setIsFallback] = useState(false)
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -41,16 +24,7 @@ export default function Home() {
     return false
   })
   const [showResumeTool, setShowResumeTool] = useState(false)
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme')
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark')
-        return true
-      }
-    }
-    return false
-  })
-  
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (isDark) {
@@ -64,7 +38,7 @@ export default function Home() {
   }, [isDark])
 
   const handleSubmit = async () => {
-    if (!resume || !jobDescription || tailorCount >= FREE_TAILORS_LIMIT) return
+    if (!resume || !jobDescription) return
 
     setIsLoading(true)
     try {
@@ -78,9 +52,6 @@ export default function Home() {
       setTailoredResume(data.tailoredResume || '')
       setIsFallback(data.isFallback || false)
       setActiveTab('output')
-      const newCount = tailorCount + 1
-      setTailorCount(newCount)
-      localStorage.setItem('tailorCount', newCount.toString())
     } catch (error) {
       console.error('Error:', error)
     } finally {
@@ -141,9 +112,9 @@ export default function Home() {
               Get Your Dream Job Faster
             </h2>
             
-<p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-               Our AI analyzes job descriptions and rewrites your resume to pass Applicant Tracking Systems (ATS) and catch recruiters&apos; attention.
-             </p>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+              Our AI analyzes job descriptions and rewrites your resume to pass Applicant Tracking Systems (ATS) and catch recruiters&apos; attention.
+            </p>
             
             <div className="flex flex-wrap justify-center gap-3 mb-10">
               <span className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-full text-sm font-medium shadow-lg hover:shadow-xl hover:scale-105 transition-all cursor-default">
@@ -158,16 +129,9 @@ export default function Home() {
             </div>
             
             <div className="flex justify-center items-center gap-6 text-sm">
-              <div className="px-4 py-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-lg shadow">
-                <span className="text-gray-500 dark:text-gray-400">{tailorCount}/{FREE_TAILORS_LIMIT} free tailors used</span>
-              </div>
               <Link href="/cover-letter" className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 transition-colors">
                 <FileText className="w-4 h-4" />
                 Cover Letter Generator
-              </Link>
-              <Link href="/pricing" className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 transition-colors">
-                <Crown className="w-4 h-4" />
-                Upgrade for more
               </Link>
             </div>
           </section>
@@ -186,9 +150,7 @@ export default function Home() {
                 { name: "Executive", icon: "👔", desc: "Senior-level focus", color: "from-gray-700 to-gray-900" },
                 { name: "Creative", icon: "🎨", desc: "Design-oriented", color: "from-pink-500 to-rose-500" },
                 { name: "Technical", icon: "💻", desc: "Tech-focused", color: "from-indigo-500 to-blue-500" },
-                { name: "Academic", icon: "🎓", desc: "Education/CV", color: "from-emerald-500 to-teal-500" },
-                { name: "Minimal", icon: "📄", desc: "Simple & clean", color: "from-slate-500 to-gray-500" },
-                { name: "Infographic", icon: "📊", desc: "Visual layout", color: "from-amber-500 to-orange-500" }
+                { name: "Minimal", icon: "📄", desc: "Simple & clean", color: "from-slate-500 to-gray-500" }
               ].map((t, i) => (
                 <div key={i} className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm p-6 rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all text-center cursor-pointer">
                   <div className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-r ${t.color} rounded-2xl flex items-center justify-center text-2xl`}>
@@ -196,10 +158,10 @@ export default function Home() {
                   </div>
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{t.name}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300">{t.desc}</p>
-</div>
-                ))}
-              </div>
-            </section>
+                </div>
+              ))}
+            </div>
+          </section>
 
           {!showResumeTool && (
             <div className="text-center mt-12">
@@ -208,7 +170,7 @@ export default function Home() {
                 className="px-10 py-5 bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white rounded-2xl font-bold text-xl hover:from-purple-700 hover:via-pink-700 hover:to-indigo-700 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex items-center justify-center mx-auto group"
               >
                 <FileText className="w-6 h-6 mr-3 group-hover:rotate-6 transition-transform" />
-                Create My Resume
+                Build Your Resume Now
               </button>
               <p className="text-gray-500 dark:text-gray-400 mt-4">
                 AI-powered resume optimization in seconds
@@ -252,115 +214,114 @@ export default function Home() {
                 </button>
               </div>
 
-            {activeTab === 'input' && (
-              <div className="p-8">
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Template Style
-                  </label>
-                  <select
-                    value={template}
-                    onChange={(e) => setTemplate(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 transition-all"
-                  >
-                    <option value="professional">Professional</option>
-                    <option value="modern">Modern</option>
-                    <option value="executive">Executive</option>
-                    <option value="creative">Creative</option>
-                    <option value="minimal">Minimal</option>
-                    <option value="technical">Technical</option>
-                  </select>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
+              {activeTab === 'input' && (
+                <div className="p-8">
+                  <div className="mb-6">
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Your Current Resume
+                      Template Style
                     </label>
-                    <textarea
-                      value={resume}
-                      onChange={(e) => setResume(e.target.value)}
-                      placeholder="Paste your current resume here..."
-                      className="w-full h-80 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 resize-none transition-all"
-                    />
+                    <select
+                      value={template}
+                      onChange={(e) => setTemplate(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 transition-all"
+                    >
+                      <option value="professional">Professional</option>
+                      <option value="modern">Modern</option>
+                      <option value="executive">Executive</option>
+                      <option value="creative">Creative</option>
+                      <option value="minimal">Minimal</option>
+                      <option value="technical">Technical</option>
+                    </select>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Job Description
-                    </label>
-                    <textarea
-                      value={jobDescription}
-                      onChange={(e) => setJobDescription(e.target.value)}
-                      placeholder="Paste the job description here..."
-                      className="w-full h-80 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 resize-none transition-all"
-                    />
-                  </div>
-                </div>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Your Current Resume
+                      </label>
+                      <textarea
+                        value={resume}
+                        onChange={(e) => setResume(e.target.value)}
+                        placeholder="Paste your current resume here..."
+                        className="w-full h-80 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 resize-none transition-all"
+                      />
+                    </div>
 
-                <div className="mt-8 text-center">
-                  <button
-                    onClick={handleSubmit}
-                    disabled={!resume || !jobDescription || isLoading || tailorCount >= FREE_TAILORS_LIMIT}
-                    className="px-10 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-medium hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center mx-auto shadow-lg hover:shadow-xl hover:scale-105 transition-all"
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Tailoring Resume...
-                      </>
-                    ) : tailorCount >= FREE_TAILORS_LIMIT ? (
-                      'Upgrade to continue'
-                    ) : (
-                      '✨ Tailor My Resume'
-                    )}
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'output' && (
-              <div className="p-8">
-                {isFallback && (
-                  <div className="mb-4 p-4 bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/20 dark:to-orange-900/20 text-yellow-700 dark:text-yellow-300 rounded-xl text-sm">
-                    Note: OpenAI API unavailable. Showing template resume.
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Job Description
+                      </label>
+                      <textarea
+                        value={jobDescription}
+                        onChange={(e) => setJobDescription(e.target.value)}
+                        placeholder="Paste the job description here..."
+                        className="w-full h-80 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 resize-none transition-all"
+                      />
+                    </div>
                   </div>
-                )}
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
-                    Your Tailored Resume
-                  </h2>
-                  <div className="flex gap-3">
+
+                  <div className="mt-8 text-center">
                     <button
-                      onClick={copyToClipboard}
-                      className="px-5 py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center transition-all"
+                      onClick={handleSubmit}
+                      disabled={!resume || !jobDescription || isLoading}
+                      className="px-10 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-medium hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center mx-auto shadow-lg hover:shadow-xl hover:scale-105 transition-all"
                     >
-                      <Copy className="w-4 h-4 mr-2" />
-                      Copy
-                    </button>
-                    <button
-                      onClick={downloadAsPDF}
-                      className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 flex items-center transition-all shadow-lg"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      PDF
-                    </button>
-                    <button
-                      onClick={downloadAsText}
-                      className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 flex items-center transition-all shadow-lg"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      TXT
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                          Tailoring Resume...
+                        </>
+                      ) : (
+                        '✨ Tailor My Resume'
+                      )}
                     </button>
                   </div>
                 </div>
+              )}
 
-                <div className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 max-h-96 overflow-y-auto">
-                  <pre className="whitespace-pre-wrap text-gray-800 dark:text-gray-200 font-mono text-sm">{tailoredResume}</pre>
+              {activeTab === 'output' && (
+                <div className="p-8">
+                  {isFallback && (
+                    <div className="mb-4 p-4 bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/20 dark:to-orange-900/20 text-yellow-700 dark:text-yellow-300 rounded-xl text-sm">
+                      Note: OpenAI API unavailable. Showing template resume.
+                    </div>
+                  )}
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                      Your Tailored Resume
+                    </h2>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={copyToClipboard}
+                        className="px-5 py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center transition-all"
+                      >
+                        <Copy className="w-4 h-4 mr-2" />
+                        Copy
+                      </button>
+                      <button
+                        onClick={downloadAsPDF}
+                        className="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 flex items-center transition-all shadow-lg"
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        PDF
+                      </button>
+                      <button
+                        onClick={downloadAsText}
+                        className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 flex items-center transition-all shadow-lg"
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        TXT
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 max-h-96 overflow-y-auto">
+                    <pre className="whitespace-pre-wrap text-gray-800 dark:text-gray-200 font-mono text-sm">{tailoredResume}</pre>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
 
           <section className="mt-16 text-center">
             <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-purple-800 dark:from-white dark:to-purple-200 bg-clip-text text-transparent mb-6">
@@ -390,7 +351,7 @@ export default function Home() {
                 { name: "Priya Sharma", role: "Marketing Lead", text: "Perfect for career changers. Helped me reframe my experience for new roles." }
               ].map((t, i) => (
                 <div key={i} className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm p-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all border border-white/20 dark:border-gray-700/50">
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">&ldquo;{t.text}&rdquo;</p>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">"{t.text}"</p>
                   <div>
                     <p className="font-semibold text-gray-900 dark:text-white">{t.name}</p>
                     <p className="text-sm text-gray-500">{t.role}</p>
@@ -406,15 +367,15 @@ export default function Home() {
             </h2>
             <div className="max-w-3xl mx-auto space-y-4">
               {[
-                { q: "Is it free?", a: "Yes! Get 3 free resume tailors per month. Upgrade for more." },
+                { q: "Is it free?", a: "Yes! Completely free to use. No payment required." },
                 { q: "How does ATS optimization work?", a: "We analyze job descriptions and incorporate relevant keywords from the posting." },
-                { q: "Can I cancel anytime?", a: "Absolutely. No questions asked." }
+                { q: "Can I cancel anytime?", a: "This is a free service with no subscriptions!" }
               ].map((faq, i) => (
                 <div key={i} className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm p-5 rounded-2xl shadow-lg border border-white/20 dark:border-gray-700/50">
                   <p className="font-semibold text-gray-900 dark:text-white">{faq.q}</p>
                   <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">{faq.a}</p>
                 </div>
-))}
+              ))}
             </div>
           </section>
 
@@ -424,33 +385,33 @@ export default function Home() {
             </h2>
              <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
                {['Google', 'Microsoft', 'Amazon', 'Apple', 'Meta', 'Netflix', 'Tesla', 'IBM', 'Accenture', 'Deloitte', 'Goldman Sachs', 'JP Morgan'].map((company) => (
-                 <div key={company} className="text-gray-600 dark:text-gray-400 font-semibold text-lg">
-                   {company}
-                 </div>
-               ))}
-             </div>
-           </section>
-
-<div className="mt-16 text-center">
-              <p className="text-gray-500 dark:text-gray-400 text-sm">
-                Powered by OpenAI - Make your resume stand out to employers and ATS systems
-              </p>
+                <div key={company} className="text-gray-600 dark:text-gray-400 font-semibold text-lg">
+                  {company}
+                </div>
+              ))}
             </div>
+          </section>
 
-            <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex flex-wrap justify-center gap-6 text-sm">
-                <Link href="/privacy" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
-                  Privacy Policy
-                </Link>
-                <Link href="/terms" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
-                  Terms of Service
-                </Link>
-                <Link href="/contact" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
-                  Contact
-                </Link>
-              </div>
-            </footer>
-         </div>
+          <div className="mt-16 text-center">
+            <p className="text-gray-500 dark:text-gray-400 text-sm">
+              Powered by OpenAI - Make your resume stand out to employers and ATS systems
+            </p>
+          </div>
+
+          <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-wrap justify-center gap-6 text-sm">
+              <Link href="/privacy" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
+                Terms of Service
+              </Link>
+              <Link href="/contact" className="text-gray-500 dark:text-gray-400 hover:text-purple-600 transition-colors">
+                Contact
+              </Link>
+            </div>
+          </footer>
+        </div>
       </div>
     )
 }
