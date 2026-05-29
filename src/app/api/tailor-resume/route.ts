@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import OpenAI from 'openai'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
 function generateFallbackResume(resume: string, template = 'professional'): string {
   const templates = {
     professional: `# Tailored Resume
-  
+
 ## Professional Summary
 Results-driven professional ready to contribute expertise and skills to your team.
 
@@ -16,7 +16,7 @@ ${resume.split('\n').filter(line => line.includes('Experience') || line.includes
 • Technical proficiencies
 • Soft skills and competencies
 
-*Note: AI API unavailable. This is a template. For full tailoring, check OpenAI billing.*`,
+*Note: AI API unavailable. This is a template. For full tailoring, check API configuration.*`,
 
     modern: `# Tailored Resume - Modern Style
 
@@ -94,4 +94,65 @@ ${resume.split('\n').filter(line => line.includes('project') || line.includes('d
   }
   
   return templates[template as keyof typeof templates] || templates.professional
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const { resume, jobDescription, template } = await request.json()
+
+    if (!process.env.GOOGLE_API_KEY) {
+      return NextResponse.json(
+        { error: 'API key not configured' },
+        { status: 500 }
+      )
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY)
+    const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+
+    const prompt = `
+You are a resume expert. Tailor the resume for the job description without fabricating experience.
+
+Original Resume:
+${resume}
+
+Job Description:
+${jobDescription}
+
+Analyze the job description and:
+1. Identify key skills and keywords
+2. Match existing experience to requirements
+3. Rephrase achievements to highlight relevant qualifications
+4. Add missing keywords naturally where appropriate
+5. Optimize for ATS systems
+
+Template Style: ${template}
+
+Provide a tailored resume that:
+- Keeps all real experience and achievements
+- Emphasizes skills that match the job
+- Incorporates relevant keywords naturally
+- Maintains professional formatting
+- Is honest and truthful (no fake experience)
+
+Format as a complete resume.
+`
+
+    try {
+      const result = await model.generateContent(prompt)
+      const tailoredResume = result.response.text()
+      return NextResponse.json({ tailoredResume })
+    } catch {
+      console.log('Gemini API error, using fallback')
+      const tailoredResume = generateFallbackResume(resume, template)
+      return NextResponse.json({ tailoredResume, isFallback: true })
+    }
+  } catch (error: unknown) {
+    console.error('Error tailoring resume:', error)
+    const message = error instanceof Error ? error.message : 'Unknown error'
+    return NextResponse.json(
+      { error: 'Failed to tailor resume', details: message },
+      { status: 500 }
+    )
+  }
 }

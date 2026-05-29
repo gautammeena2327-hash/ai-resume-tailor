@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Copy, Download, Loader2, FileText, Briefcase, Crown, Moon, Sun, Sparkles, Link2, HelpCircle, BarChart3, Edit3, DollarSign, MessageSquare } from 'lucide-react'
+import { Copy, Download, Loader2, FileText, Briefcase, Crown, Moon, Sun, Sparkles, Link2, HelpCircle, BarChart3, Edit3, DollarSign, MessageSquare, Shield, Zap, Award, Lock, Users, TrendingUp, CheckCircle, X, Star } from 'lucide-react'
 import Link from 'next/link'
 import jsPDF from 'jspdf'
 
@@ -40,6 +40,7 @@ export default function Home() {
     }
     return false
   })
+  const [animatedScores, setAnimatedScores] = useState({ kw: 0, ats: 0, fmt: 0 })
   const [showResumeTool, setShowResumeTool] = useState(false)
   
   useEffect(() => {
@@ -64,6 +65,15 @@ export default function Home() {
   const openResumeTool = () => {
     setShowResumeTool(true)
   }
+
+  useEffect(() => {
+    if (showResumeTool) {
+      const timer = setTimeout(() => {
+        setAnimatedScores({ kw: 78, ats: 92, fmt: 85 })
+      }, 300)
+      return () => clearTimeout(timer)
+    }
+  }, [showResumeTool])
 
   const handleSubmit = async () => {
     if (!resume || !jobDescription || tailorCount >= FREE_TAILORS_LIMIT) return
@@ -178,26 +188,35 @@ export default function Home() {
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-bold text-gray-900 dark:text-white">ATS Score Preview</h4>
                   <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">85</span>
+                    <span className="text-white font-bold text-lg">{animatedScores.ats || 85}</span>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div>
                     <div className="flex justify-between text-sm mb-1">
                       <span className="text-gray-600 dark:text-gray-300">Keyword Match</span>
-                      <span className="text-green-600 font-medium">78%</span>
+                      <span className="text-green-600 font-medium">{animatedScores.kw}%</span>
                     </div>
                     <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" style={{ width: '78%' }}></div>
+                      <div className="h-full bg-gradient-to-r from-green-500 to-emerald-500 rounded-full transition-all duration-1000" style={{ width: `${animatedScores.kw}%` }}></div>
                     </div>
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-1">
                       <span className="text-gray-600 dark:text-gray-300">ATS Compatibility</span>
-                      <span className="text-blue-600 font-medium">92%</span>
+                      <span className="text-blue-600 font-medium">{animatedScores.ats}%</span>
                     </div>
                     <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" style={{ width: '92%' }}></div>
+                      <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full transition-all duration-1000" style={{ width: `${animatedScores.ats}%` }}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-600 dark:text-gray-300">Format Score</span>
+                      <span className="text-purple-600 font-medium">{animatedScores.fmt}%</span>
+                    </div>
+                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-purple-500 to-violet-500 rounded-full transition-all duration-1000" style={{ width: `${animatedScores.fmt}%` }}></div>
                     </div>
                   </div>
                   <div className="pt-3 border-t dark:border-gray-700">
